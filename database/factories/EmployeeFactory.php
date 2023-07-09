@@ -25,7 +25,7 @@ class EmployeeFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'password' => Hash::make(env('TESTING_PASSWORD')),
+            'password' => Hash::make(env('TEST_PASSWORD')),
             'role' => Role::USER,
         ];
     }
