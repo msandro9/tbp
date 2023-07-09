@@ -4,7 +4,9 @@ namespace Database\Factories;
 
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -19,6 +21,18 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
+        $street = $this->faker->streetName;
+        $street = str_replace("'", "", $street);
+        $number = $this->faker->randomNumber();
+        $postalCode = $this->faker->postcode;
+        $city = $this->faker->randomElement(['Varazdin', 'Zagreb', 'Split']);
+        $country = 'Croatia';
+
+        $fullPath = Storage::path('avatar.png');
+
+        $addressValue = DB::raw("ROW('$street', '$number', '$postalCode', '$city', '$country')");
+        $pictureValue = DB::raw("lo_import('$fullPath')");
+
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
@@ -27,6 +41,8 @@ class EmployeeFactory extends Factory
             'remember_token' => Str::random(10),
             'password' => Hash::make(env('TEST_PASSWORD')),
             'role' => Role::USER,
+            'address' => $addressValue,
+            'picture' => $pictureValue,
         ];
     }
 

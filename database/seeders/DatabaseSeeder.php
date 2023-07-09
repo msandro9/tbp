@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($teams as $team) {
             $this->callWith(EmployeeSeeder::class, ['team_id' => $team->id]);
+            $this->callWith(TeamLeadersSeeder::class, ['team' => $team]);
         }
     }
 }

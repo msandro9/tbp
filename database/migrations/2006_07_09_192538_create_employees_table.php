@@ -15,6 +15,8 @@ return new class extends Migration
         DB::statement("
             CREATE TABLE employees (
                 id bigserial NOT NULL PRIMARY KEY,
+                address address,
+                picture OID,
                 vacation_days INTEGER NOT NULL DEFAULT 20 CHECK (vacation_days >= 0),
                 team_id BIGINT
             ) INHERITS (users)
