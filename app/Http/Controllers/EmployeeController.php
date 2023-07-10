@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\EmployeeRepositoryInterface;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class EmployeeController extends Controller
 {
+    private EmployeeRepositoryInterface $employeeRepository;
+
+    public function __construct(EmployeeRepositoryInterface $employeeRepository)
+    {
+        $this->employeeRepository = $employeeRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */

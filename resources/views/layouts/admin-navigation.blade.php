@@ -12,18 +12,18 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                        Users
+                    <x-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.index')">
+                        {{ __('Employees') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                        Teams
+                    <x-nav-link :href="route('admin.teams.index')" :active="request()->routeIs('admin.teams.index')">
+                        {{ __('Teams') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

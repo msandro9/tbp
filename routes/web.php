@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
+        Route::resource('employees', \App\Http\Controllers\Admin\EmployeeController::class);
+        Route::resource('teams', \App\Http\Controllers\Admin\TeamController::class);
     });
     Route::group([
         'middleware' => 'is_employee',
