@@ -13,11 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
-            ALTER TABLE teams
-            ADD CONSTRAINT ref_teams_project_leader_id
-            FOREIGN KEY (project_leader_id)
-            REFERENCES employees(id)
-            ON DELETE RESTRICT
+            ALTER TABLE permissions
+            ADD CONSTRAINT ref_permissions_request_id
+            FOREIGN KEY (request_id)
+            REFERENCES requests(id)
+            ON DELETE CASCADE
             ON UPDATE CASCADE
         ");
     }
@@ -28,8 +28,8 @@ return new class extends Migration
     public function down(): void
     {
         DB::statement("
-            ALTER TABLE teams
-            DROP CONSTRAINT IF EXISTS ref_teams_project_leader_id
+            ALTER TABLE requests
+            DROP CONSTRAINT IF EXISTS ref_permissions_request_id
         ");
     }
 };

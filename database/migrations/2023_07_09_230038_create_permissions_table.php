@@ -13,12 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
-            ALTER TABLE teams
-            ADD CONSTRAINT ref_teams_project_leader_id
-            FOREIGN KEY (project_leader_id)
-            REFERENCES employees(id)
-            ON DELETE RESTRICT
-            ON UPDATE CASCADE
+            CREATE TABLE permissions (
+                id bigserial NOT NULL PRIMARY KEY,
+                accepted boolean,
+                note TEXT,
+                request_id BIGSERIAL,
+                employee_id BIGSERIAL,
+                created_at timestamp(0) WITHOUT TIME ZONE NULL,
+                updated_at timestamp(0) WITHOUT TIME ZONE NULL
+            )
         ");
     }
 
@@ -27,9 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("
-            ALTER TABLE teams
-            DROP CONSTRAINT IF EXISTS ref_teams_project_leader_id
-        ");
+        Schema::dropIfExists('permissions');
     }
 };

@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             $this->callWith(EmployeeSeeder::class, ['team_id' => $team->id]);
             $this->callWith(TeamLeadersSeeder::class, ['team' => $team]);
         }
+
+        $this->callWith(RequestSeeder::class);
     }
 }

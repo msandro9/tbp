@@ -16,7 +16,12 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            @if (Auth::user()->role_id === \App\Models\Role::ADMINISTRATOR)
+                @include('user-navigation')
+            @else
+                @include('layouts.admin-navigation')
+            @endif
+
 
             <!-- Page Heading -->
             @if (isset($header))
