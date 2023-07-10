@@ -15,7 +15,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         $employees = DB::select("
             SELECT e.id, first_name, last_name, role, email, address, vacation_days, team_id, t.name as team_name
             FROM employees e
-            INNER JOIN teams t
+            LEFT JOIN teams t
             ON team_id = t.id
             ORDER BY last_name, first_name
         ");
@@ -28,7 +28,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         $employee = DB::select("
             SELECT e.id, first_name, last_name, role, email, address, vacation_days, team_id, t.name as team_name
             FROM employees e
-            INNER JOIN teams t
+            LEFT JOIN teams t
             ON team_id = t.id
             WHERE e.id = :id
             LIMIT 1
@@ -94,9 +94,10 @@ class EmployeeRepository implements EmployeeRepositoryInterface
             INNER JOIN teams t
             ON team_id = t.id
             WHERE t.id = :teamId
-            AND role = :role
+            AND (t.team_leader_id IS NULL OR e.id != t.team_leader_id)
+            AND (t.project_leader_id IS NULL OR e.id != t.project_leader_id)
             ORDER BY last_name, first_name
-        ", ['teamId' => $teamId, 'role' => Role::USER]);
+        ", ['teamId' => $teamId]);
 
         return $this->formatRawEmployees($employees);
     }

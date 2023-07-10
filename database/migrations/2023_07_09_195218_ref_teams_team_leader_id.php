@@ -17,7 +17,7 @@ return new class extends Migration
             ADD CONSTRAINT ref_teams_team_leader_id
             FOREIGN KEY (team_leader_id)
             REFERENCES employees(id)
-            ON DELETE RESTRICT
+            ON DELETE SET NULL
             ON UPDATE CASCADE
         ");
     }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\TeamRepositoryInterface;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class TeamRepository implements TeamRepositoryInterface
@@ -42,6 +43,23 @@ class TeamRepository implements TeamRepositoryInterface
         return $this->formatRawTeam($team[0]);
     }
 
+    public function createTeam($values)
+    {
+        DB::statement("
+            INSERT INTO TEAMS
+            (name)
+            VALUES
+            (:name)
+        ", $values);
+    }
+
+    public function deleteTeam($id)
+    {
+        DB::statement("
+            DELETE FROM teams WHERE id = :id
+        ", ['id' => $id]);
+    }
+
     private function formatRawTeams($teams)
     {
         $formattedTeams = [];
@@ -56,5 +74,50 @@ class TeamRepository implements TeamRepositoryInterface
     private function formatRawTeam($team)
     {
         return $team;
+    }
+
+    public function updateTeam($values)
+    {
+        $old_tl = $values['old_team_leader_id'];
+        $tl = $values['team_leader_id'];
+
+        $old_pl = $values['old_project_leader_id'];
+        $pl = $values['project_leader_id'];
+
+        $team_id = $values['team_id'];
+
+        DB::beginTransaction();
+
+        try {
+            if ($old_tl != $tl) {
+                DB::statement("
+                    UPDATE employees SET role = :role WHERE id = :id
+                ", ['role' => Role::USER, 'id' => $old_tl]);
+
+                DB::statement("
+                    UPDATE employees SET role = :role WHERE id = :id
+                ", ['role' => Role::TEAM_LEADER, 'id' => $tl]);
+            }
+
+            if ($old_pl != $pl) {
+                DB::statement("
+                    UPDATE employees SET role = :role WHERE id = :id
+                ", ['role' => Role::USER, 'id' => $old_pl]);
+
+                DB::statement("
+                    UPDATE employees SET role = :role WHERE id = :id
+                ", ['role' => Role::PROJECT_LEADER, 'id' => $pl]);
+            }
+
+            DB::statement("
+                UPDATE teams SET team_leader_id = :tl_id, project_leader_id = :pl_id WHERE id = :id
+            ", ['id' => $team_id, 'tl_id' => $tl, 'pl_id' => $pl]);
+
+            DB::commit();
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }

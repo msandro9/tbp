@@ -6,6 +6,8 @@ use App\Contracts\EmployeeRepositoryInterface;
 use App\Contracts\TeamRepositoryInterface;
 use App\Helper\Helper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -38,15 +40,19 @@ class TeamController extends Controller
      */
     public function create()
     {
-
+        return view('admin.teams.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request)
     {
+        $validated = $request->validated();
 
+        $this->teamRepository->createTeam($validated);
+
+        return redirect()->route('admin.teams.index');
     }
 
     /**
@@ -70,15 +76,37 @@ class TeamController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $team = $this->teamRepository->getTeam($id);
+
+        if (empty($team)) {
+            throw new NotFoundHttpException();
+        }
+
+        $employees = $this->employeeRepository->getEmployeesByTeam($id);
+
+        return view('admin.teams.edit', ['t' => $team, 'employees' => $employees]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTeamRequest $request, string $id)
     {
-        //
+        $validated = $request->validated();
+
+        $team = $this->teamRepository->getTeam($id);
+
+        if (empty($team)) {
+            throw new NotFoundHttpException();
+        }
+
+        $validated['old_team_leader_id'] = $team->tl_id;
+        $validated['old_project_leader_id'] = $team->pl_id;
+
+        $this->teamRepository->updateTeam($validated);
+        $team = $this->teamRepository->getTeam($id);
+
+        return redirect()->route('admin.teams.show', ['team' => $team->id]);
     }
 
     /**
@@ -86,6 +114,8 @@ class TeamController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->teamRepository->deleteTeam($id);
+
+        return redirect()->route('admin.teams.index');
     }
 }

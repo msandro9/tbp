@@ -32,23 +32,25 @@
                     Address: {{ $e->address }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Team: {!! !empty($e->team_name) ? $e->team_name : 'null' !!}
+                    Team: {{ $e->team_name }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
                     Vaction days: {{ $e->vacation_days }}
                 </div>
 
             </div>
-            <x-nav-link :href="route('admin.employees.edit', ['employee' => $e->id])" :active="request()->routeIs('admin.employees.edit')">
-                {{ __('Edit user') }}
-            </x-nav-link>
-            <x-nav-link>
-                <form method="POST" action={{ route('admin.employees.destroy', ['employee' => $e->id]) }}>
-                    @csrf
-                    @method('DELETE')
-                    <button>Delete user</button>
-                </form>
-            </x-nav-link>
+            @if($e->role == \App\Models\Role::USER)
+                <x-nav-link :href="route('admin.employees.edit', ['employee' => $e->id])" :active="request()->routeIs('admin.employees.edit')">
+                    {{ __('Edit employee') }}
+                </x-nav-link>
+                <x-nav-link>
+                    <form method="POST" action={{ route('admin.employees.destroy', ['employee' => $e->id]) }}>
+                        @csrf
+                        @method('DELETE')
+                        <button>Delete employee</button>
+                    </form>
+                </x-nav-link>
+            @endif
         </div>
     </div>
 </x-app-layout>

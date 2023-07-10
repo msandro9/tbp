@@ -15,7 +15,7 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Team -->
+                        <!-- Vacation days -->
                         <div class="mt-4">
                             <x-label for="vacation_days" :value="__('Vaction days')"/>
                             <input type="number" name="vacation_days" id="vacation_days"
