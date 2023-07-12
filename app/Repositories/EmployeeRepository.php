@@ -101,4 +101,38 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 
         return $this->formatRawEmployees($employees);
     }
+
+    public function getTeamLeader($id)
+    {
+        $employee = DB::select("
+            SELECT id, first_name, last_name, role
+            FROM employees e
+            WHERE team_id = :id
+            AND role = :role
+            LIMIT 1
+        ", ['id' => $id, 'role' => Role::TEAM_LEADER]);
+
+        if (empty($employee)) {
+            return null;
+        }
+
+        return $employee[0];
+    }
+
+    public function getProjectLeader($id)
+    {
+        $employee = DB::select("
+            SELECT id, first_name, last_name, role
+            FROM employees e
+            WHERE team_id = :id
+            AND role = :role
+            LIMIT 1
+        ", ['id' => $id, 'role' => Role::PROJECT_LEADER]);
+
+        if (empty($employee)) {
+            return null;
+        }
+
+        return $employee[0];
+    }
 }

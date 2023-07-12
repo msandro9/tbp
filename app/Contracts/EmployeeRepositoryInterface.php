@@ -2,6 +2,9 @@
 
 namespace App\Contracts;
 
+use App\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 interface EmployeeRepositoryInterface
 {
     public function getEmployees(): array;
@@ -15,4 +18,8 @@ interface EmployeeRepositoryInterface
     public function updateEmployee($id, $values);
 
     public function getEmployeesByTeam($teamId);
+
+    public function getTeamLeader($id);
+
+    public function getProjectLeader($id);
 }

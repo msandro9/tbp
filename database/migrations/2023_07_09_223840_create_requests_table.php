@@ -20,9 +20,10 @@ return new class extends Migration
                 end_date date NOT NULL,
                 duration integer NOT NULL,
                 status request_status NOT NULL DEFAULT 'Pending',
-                employee_id BIGINT,
-                created_at timestamp(0) WITHOUT TIME ZONE NULL,
-                updated_at timestamp(0) WITHOUT TIME ZONE NULL
+                employee_id BIGINT NOT NULL,
+                created_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP
+                CONSTRAINT check_end_date_after_start_date CHECK (end_date > start_date)
             )
         ");
     }

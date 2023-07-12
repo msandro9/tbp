@@ -22,8 +22,8 @@ return new class extends Migration
                 email_verified_at timestamp(0) WITHOUT TIME ZONE NULL,
                 password varchar(255) NOT NULL,
                 remember_token varchar(100),
-                created_at timestamp(0) WITHOUT TIME ZONE NULL,
-                updated_at timestamp(0) WITHOUT TIME ZONE NULL
+                created_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP
             )
         ");
     }

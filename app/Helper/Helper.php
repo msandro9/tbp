@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 class Helper
 {
-    public static function paginate($items, $perPage = 15, $page = null, $options = [])
+    public static function paginate($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (\Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);

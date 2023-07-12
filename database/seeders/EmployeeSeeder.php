@@ -22,7 +22,7 @@ class EmployeeSeeder extends Seeder
             'role' => Role::PROJECT_LEADER,
             'team_id' => $team_id
         ]);
-        Employee::factory(15)->create([
+        Employee::factory(6)->create([
             'team_id' => $team_id
         ]);
     }

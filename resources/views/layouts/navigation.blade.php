@@ -16,21 +16,17 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                        Users
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                        Teams
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                        Vacations
-                    </x-nav-link>
-                </div>
+                @php
+                    $res = \Illuminate\Support\Facades\DB::select('SELECT team_id FROM employees WHERE id = :id', ['id' => auth()->id()]);
+                    $team_id = $res[0]?->team_id ?? null;
+                @endphp
+                @if(!empty($team_id))
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('employee.teams.show', ['id' => $team_id])" :active="request()->routeIs('employee.teams.show')">
+                            Team
+                        </x-nav-link>
+                    </div>
+                @endif
             </div>
 
             <!-- Settings Dropdown -->
@@ -94,11 +90,6 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
                 Teams
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                Vacations
             </x-responsive-nav-link>
         </div>
 

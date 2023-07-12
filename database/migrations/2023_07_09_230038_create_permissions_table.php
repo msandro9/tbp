@@ -17,10 +17,11 @@ return new class extends Migration
                 id bigserial NOT NULL PRIMARY KEY,
                 accepted boolean,
                 note TEXT,
-                request_id BIGSERIAL,
-                employee_id BIGSERIAL,
-                created_at timestamp(0) WITHOUT TIME ZONE NULL,
-                updated_at timestamp(0) WITHOUT TIME ZONE NULL
+                type permission_type NOT NULL,
+                request_id BIGINT NOT NULL,
+                employee_id BIGINT,
+                created_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at timestamp(0) WITHOUT TIME ZONE NULL DEFAULT CURRENT_TIMESTAMP
             )
         ");
     }

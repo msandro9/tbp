@@ -16,10 +16,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @if (Auth::user()->role_id === \App\Models\Role::ADMINISTRATOR)
-                @include('user-navigation')
-            @else
+            @if (Auth::user()->role === \App\Models\Role::ADMINISTRATOR)
                 @include('layouts.admin-navigation')
+            @else
+                @include('layouts.navigation')
             @endif
 
 

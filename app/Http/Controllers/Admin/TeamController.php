@@ -62,13 +62,12 @@ class TeamController extends Controller
     {
         $team = $this->teamRepository->getTeam($id);
         $employees = $this->employeeRepository->getEmployeesByTeam($id);
-        $employeesPaginated = Helper::paginate($employees);
 
         if (empty($team)) {
             throw new NotFoundHttpException();
         }
 
-        return view('admin.teams.show', ['t' => $team, 'employees' => $employeesPaginated]);
+        return view('admin.teams.show', ['t' => $team, 'employees' => $employees]);
     }
 
     /**

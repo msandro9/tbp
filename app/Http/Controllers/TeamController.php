@@ -2,10 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\EmployeeRepositoryInterface;
+use App\Contracts\RequestRepositoryInterface;
+use App\Contracts\TeamRepositoryInterface;
+use App\Helper\Helper;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamController extends Controller
 {
+    private EmployeeRepositoryInterface $employeeRepository;
+
+    private TeamRepositoryInterface $teamRepository;
+
+    private RequestRepositoryInterface $requestRepository;
+
+    public function __construct(EmployeeRepositoryInterface $employeeRepository, TeamRepositoryInterface $teamRepository, RequestRepositoryInterface $requestRepository)
+    {
+        $this->employeeRepository = $employeeRepository;
+        $this->teamRepository = $teamRepository;
+        $this->requestRepository = $requestRepository;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -35,7 +55,28 @@ class TeamController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $employee = $this->employeeRepository->getEmployee(auth()->id());
+
+        if ($employee->team_id != $id) {
+            throw new AuthorizationException();
+        }
+
+        $team = $this->teamRepository->getTeam($id);
+        $employees = $this->employeeRepository->getEmployeesByTeam($id);
+
+        $upcomingVacations = $this->requestRepository->getUpcomingVacationsForTeam($id);
+        $inProgressVacations = $this->requestRepository->getInProgressVacationsForTeam($id);
+
+        if (empty($team)) {
+            throw new NotFoundHttpException();
+        }
+
+        return view('teams.show', [
+            't' => $team,
+            'employees' => $employees,
+            'inprogress' => $inProgressVacations,
+            'upcoming' => $upcomingVacations
+        ]);
     }
 
     /**

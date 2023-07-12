@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,9 +47,14 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => 'is_employee',
         'as' => 'employee.'
     ], function () {
-        Route::get('/', function () {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/teams/{id}', [App\Http\Controllers\TeamController::class, 'show'])->name('teams.show');
+
+        Route::resource('requests', \App\Http\Controllers\RequestController::class)->except(['index', 'destroy']);
+
+        Route::get('/requests/{request}/permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+        Route::put('/requests/{request}/permissions/{permission}/update', [PermissionController::class, 'update'])->name('permissions.update');
 
     });
 });
