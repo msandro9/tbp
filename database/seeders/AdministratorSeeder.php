@@ -18,9 +18,9 @@ class AdministratorSeeder extends Seeder
     public function run(): void
     {
         $details = [
-            'first_name' => 'Sandro',
-            'last_name' => 'Mrvcic',
-            'email' => 'sandro.mrvcic33@gmail.com',
+            'first_name' => 'Administrator',
+            'last_name' => 'Administrator',
+            'email' => 'admin@example.com',
             'email_verified_at' => Carbon::now(),
             'remember_token' => Str::random(10),
             'password' => Hash::make(env('TEST_PASSWORD')),

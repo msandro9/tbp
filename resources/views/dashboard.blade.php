@@ -40,7 +40,7 @@
 
         </x-request-table>
     @else
-        <x-request-table title="Pending team requests" :requests="$requests" :showUser="true">
+        <x-request-table title="Pending team requests" :requests="$requests" :showUser="true" :finished="false">
 
         </x-request-table>
     @endif

@@ -18,10 +18,13 @@ return new class extends Migration
             DECLARE
                 total_permissions INTEGER;
                 accepted_permissions INTEGER;
+                request_duration INTEGER;
+                request_employee_id INTEGER;
             BEGIN
                 IF NEW.accepted = false THEN
                     UPDATE requests
-                    SET status = 'Declined'
+                    SET status = 'Declined',
+                    updated_at = CURRENT_TIMESTAMP
                     WHERE id = NEW.request_id;
                 ELSE
                     SELECT COUNT(*) INTO total_permissions
@@ -34,8 +37,17 @@ return new class extends Migration
 
                     IF accepted_permissions = total_permissions THEN
                         UPDATE requests
-                        SET status = 'Accepted'
+                        SET status = 'Accepted',
+                        updated_at = CURRENT_TIMESTAMP
                         WHERE id = NEW.request_id;
+
+                        SELECT duration, employee_id INTO request_duration, request_employee_id
+                        FROM requests
+                        WHERE id = NEW.request_id;
+
+                        UPDATE employees
+                        SET vacation_days = vacation_days - request_duration
+                        WHERE id = request_employee_id;
                     END IF;
                 END IF;
 

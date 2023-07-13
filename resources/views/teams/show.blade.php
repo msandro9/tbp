@@ -104,7 +104,11 @@
                 </div>
             </div>
         </div>
-        <x-request-table title="Upcoming vacations" :requests="$upcoming" :showUser="true">
+        <x-request-table title="Vacations in progress" :requests="$inprogress" :showUser="true" :finished="true">
+
+        </x-request-table>
+
+        <x-request-table title="Upcoming vacations" :requests="$upcoming" :showUser="true" :finished="true">
 
         </x-request-table>
     </div>

@@ -47,7 +47,7 @@ class RequestRepository implements RequestRepositoryInterface
             AND e.team_id = :id
             AND status = :status
             AND role = :role
-            ORDER BY start_date
+            ORDER BY start_date ASC, end_date DESC
         ", ['id' => $id, 'status' => RequestStatus::ACCEPTED, 'role' => Role::USER]);
 
         return $requests;
@@ -59,11 +59,12 @@ class RequestRepository implements RequestRepositoryInterface
             SELECT r.*, e.first_name, e.last_name FROM requests r
             INNER JOIN employees e
             ON r.employee_id = e.id
-            WHERE end_date < CURRENT_DATE
+            WHERE r.start_date <= CURRENT_DATE
+            AND r.end_date >= CURRENT_DATE
             AND e.team_id = :id
             AND status = :status
             AND role = :role
-            ORDER BY end_date
+            ORDER BY end_date, start_date
         ", ['id' => $id, 'status' => RequestStatus::ACCEPTED, 'role' => Role::USER]);
 
         return $requests;
@@ -114,6 +115,7 @@ class RequestRepository implements RequestRepositoryInterface
             ON r.employee_id = e.id
             WHERE r.status = :status
             AND e.team_id = :id
+            ORDER BY start_date ASC, end_date DESC
         ", ['id' => $id, 'status' => RequestStatus::PENDING]);
 
         return $requests;

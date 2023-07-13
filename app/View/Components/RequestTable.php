@@ -11,7 +11,11 @@ class RequestTable extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $title = '', public array $requests = [], public bool $showUser = false)
+    public function __construct(public string $title = '',
+                                public array $requests = [],
+                                public bool $showUser = false,
+                                public bool $finished = true
+    )
     {
         //
     }

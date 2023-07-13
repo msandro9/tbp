@@ -31,7 +31,7 @@
                                     Duration
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created at
+                                    {{ $finished === true ? 'Updated at' : 'Created at' }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Show</span>
@@ -61,7 +61,7 @@
                                         {{ $r->duration }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $r->created_at }}
+                                        {{ $finished === true ? $r->updated_at : $r->created_at }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <x-nav-link :href="route('employee.requests.show', ['request' => $r->id])"

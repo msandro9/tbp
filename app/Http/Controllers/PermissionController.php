@@ -89,6 +89,7 @@ class PermissionController extends Controller
     public function update(UpdatePermissionRequest $r, string $request, string $permission)
     {
         $validated = $r->validated();
+        unset($validated['request_id']);
         $validated['accepted'] = filter_var($validated['accepted'], FILTER_VALIDATE_BOOLEAN);
 
         $requestId = $request;

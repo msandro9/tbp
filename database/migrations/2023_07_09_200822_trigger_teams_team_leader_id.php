@@ -11,7 +11,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        DB::unprepared('
+        DB::unprepared("
             CREATE OR REPLACE FUNCTION check_team_leader_role()
             RETURNS TRIGGER AS $$
             BEGIN
@@ -19,15 +19,15 @@ return new class extends Migration {
                     IF NOT EXISTS (
                         SELECT 1
                         FROM employees
-                        WHERE id = NEW.team_leader_id AND role = \'Team Leader\'
+                        WHERE id = NEW.team_leader_id AND role = 'Team Leader'
                     ) THEN
-                        RAISE EXCEPTION \'The employee assigned as team leader must have the role "Team Leader".\';
+                        RAISE EXCEPTION 'The employee assigned as team leader must have the role Team Leader.';
                     END IF;
                 END IF;
                 RETURN NEW;
             END;
             $$ LANGUAGE plpgsql;
-        ');
+        ");
 
         DB::unprepared('
             CREATE TRIGGER before_insert_team_leader
