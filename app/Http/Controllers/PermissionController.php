@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\EmployeeRepositoryInterface;
 use App\Contracts\RequestRepositoryInterface;
+use App\Http\Requests\UpdatePermissionRequest;
+use App\Models\RequestStatus;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -84,9 +86,46 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePermissionRequest $r, string $request, string $permission)
     {
+        $validated = $r->validated();
+        $validated['accepted'] = filter_var($validated['accepted'], FILTER_VALIDATE_BOOLEAN);
 
+        $requestId = $request;
+        $permissionId = $permission;
+
+        $request = $this->requestRepository->getRequest($request);
+
+        if ($request->status != RequestStatus::PENDING) {
+            return redirect()->route('employee.requests.show', [
+                'request' => $request->id,
+            ]);
+        }
+
+        $permission = $this->requestRepository->getPermission($permission);
+
+        if (empty($permission) || empty($request) || $permission->request_id != $request->id) {
+            throw new NotFoundHttpException();
+        }
+
+        $employee = $this->employeeRepository->getEmployee(auth()->id());
+
+        $validated['employee_id'] = $employee->id;
+        $validated['id'] = $permission->id;
+
+        if ($request->team_id != $employee->team_id) {
+            throw new AuthorizationException();
+        }
+
+        if ($permission->type != $employee->role) {
+            throw new AuthorizationException();
+        }
+
+        $this->requestRepository->updatePermission($permissionId, $validated);
+
+        return redirect()->route('employee.requests.show', [
+           'request' => $request->id,
+        ]);
     }
 
     /**

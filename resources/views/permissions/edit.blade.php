@@ -11,7 +11,7 @@
                     Id: {{ $request->id }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    User: {{ $request->first_name }} {{ $request->last_name }}
+                    Employee: {{ $request->first_name }} {{ $request->last_name }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
                     Start date: {{ $request->start_date }}

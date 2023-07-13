@@ -12,8 +12,8 @@ class TeamRepository implements TeamRepositoryInterface
     {
         $teams = DB::select("
             SELECT t.id, t.name,
-            team_leader_id as tl_id, e1.first_name as tl_fn , e1.last_name as tl_ln,
-            project_leader_id as pl_id, e2.first_name as pl_fn, e2.last_name as pl_ln
+            team_leader_id as tl_id, e1.first_name as tl_fn , e1.last_name as tl_ln, e1.email as tl_email,
+            project_leader_id as pl_id, e2.first_name as pl_fn, e2.last_name as pl_ln, e2.email as pl_email
             FROM teams t
             LEFT JOIN employees e1
             ON team_leader_id = e1.id
@@ -29,8 +29,8 @@ class TeamRepository implements TeamRepositoryInterface
     {
         $team = DB::select("
             SELECT t.id, t.name,
-            team_leader_id as tl_id, e1.first_name as tl_fn , e1.last_name as tl_ln,
-            project_leader_id as pl_id, e2.first_name as pl_fn, e2.last_name as pl_ln
+            team_leader_id as tl_id, e1.first_name as tl_fn , e1.last_name as tl_ln, e1.email as tl_email,
+            project_leader_id as pl_id, e2.first_name as pl_fn, e2.last_name as pl_ln,  e2.email as pl_email
             FROM teams t
             LEFT JOIN employees e1
             ON team_leader_id = e1.id

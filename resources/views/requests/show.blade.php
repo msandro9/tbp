@@ -45,7 +45,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Status: {{ $teamLeaderPermission->accepted ?? 'Pending' }}
+                    Status: @if($teamLeaderPermission->accepted === true)
+                        {{'Accepted'}}
+                    @elseif($teamLeaderPermission->accepted === false)
+                        {{'Declined'}}
+                    @else
+                        {{'Pending'}}
+                    @endif
                 </div>
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -55,14 +61,15 @@
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Date: @if(is_null($teamLeaderPermission->accepted))
+                    Date: @if($teamLeaderPermissionNotUpdated)
                         {{''}}
                     @else
                         {{$teamLeaderPermission->updated_at}}
                     @endif
                 </div>
             </div>
-            @if($isTeamLeader && is_null($teamLeaderPermission->accepted) && $request->status = \App\Models\RequestStatus::PENDING)
+
+            @if($isTeamLeader && $teamLeaderPermissionNotUpdated && $request->status = \App\Models\RequestStatus::PENDING)
                 <div class="flex items-center justify-start mt-4">
                     <a
                         href="{{ URL::route('employee.permissions.edit', ['request' => $request->id, 'permission' => $teamLeaderPermission->id]) }}">
@@ -87,7 +94,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Status: {{ $projectLeaderPermission->accepted ?? 'Pending' }}
+                    Status: @if($projectLeaderPermission->accepted === true)
+                        {{'Accepted'}}
+                    @elseif($projectLeaderPermission->accepted = false)
+                        {{'Declined'}}
+                    @else
+                        {{'Pending'}}
+                    @endif
                 </div>
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -97,14 +110,14 @@
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Date: @if(is_null($projectLeaderPermission->accepted))
+                    Date: @if($projectLeaderPermissionNotUpdated)
                         {{''}}
                     @else
                         {{$projectLeaderPermission->updated_at}}
                     @endif
                 </div>
             </div>
-            @if($isProjectLeader && is_null($projectLeaderPermission->accepted) && $request->status = \App\Models\RequestStatus::PENDING)
+            @if($isProjectLeader && $projectLeaderPermissionNotUpdated && $request->status = \App\Models\RequestStatus::PENDING)
                 <div class="flex items-center justify-start mt-4">
                     <a
                         href="{{ URL::route('employee.permissions.edit', ['request' => $request->id, 'permission' => $projectLeaderPermission->id]) }}">

@@ -129,4 +129,15 @@ class RequestRepository implements RequestRepositoryInterface
 
         return $permission[0];
     }
+
+    public function updatePermission($id, $values)
+    {
+        DB::statement("
+            UPDATE permissions SET
+            accepted = :accepted,
+            employee_id = :employee_id,
+            note = :note
+            WHERE id = :id
+        ", $values);
+    }
 }

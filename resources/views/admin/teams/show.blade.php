@@ -17,10 +17,10 @@
                     Id: {{ $t->id }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Team Leader: #{{ $t->tl_id }} {{ $t->tl_fn }} {{ $t->tl_ln }}
+                    Team Leader: #{{ $t->tl_id }} {{ $t->tl_fn }} {{ $t->tl_ln }} {{ $t->tl_email }}
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Project Leader: #{{ $t->pl_id }} {{ $t->pl_fn }} {{ $t->pl_ln }}
+                    Project Leader: #{{ $t->pl_id }} {{ $t->pl_fn }} {{ $t->pl_ln }} {{ $t->pl_email }}
                 </div>
             </div>
             <x-nav-link :href="route('admin.teams.edit', ['team' => $t->id])" :active="request()->routeIs('admin.teams.edit')">
@@ -105,9 +105,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                    <div class="mt-6 p-4">
-                        {{ $employees->links() }}
                     </div>
                 </div>
             </div>

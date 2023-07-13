@@ -69,6 +69,9 @@ class RequestController extends Controller
         $teamLeaderPermission = $this->requestRepository->getTeamLeaderPermission($request->id);
         $projectLeaderPermission = $this->requestRepository->getProjectLeaderPermission($request->id);
 
+        $teamLeaderPermissionNotUpdated = is_null($teamLeaderPermission->accepted);
+        $projectLeaderPermissionNotUpdated = is_null($projectLeaderPermission->accepted);
+
         $isCreator = false;
         $isTeamLeader = false;
         $isProjectLeader = false;
@@ -98,6 +101,8 @@ class RequestController extends Controller
             'isTeamLeader' => $isTeamLeader,
             'isProjectLeader' => $isProjectLeader,
             'isCreator' => $isCreator,
+            'projectLeaderPermissionNotUpdated' => $projectLeaderPermissionNotUpdated,
+            'teamLeaderPermissionNotUpdated' => $teamLeaderPermissionNotUpdated
         ]);
     }
 

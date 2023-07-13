@@ -25,4 +25,6 @@ interface RequestRepositoryInterface
     public function getProjectLeaderPermission($id);
 
     public function getPermission($id);
+
+    public function updatePermission($id, $values);
 }
