@@ -28,10 +28,11 @@ class EmployeeFactory extends Factory
         $city = $this->faker->randomElement(['Varazdin', 'Zagreb', 'Split']);
         $country = 'Croatia';
 
-        $fullPath = Storage::path('avatar.png');
+        $avatarPaths = Storage::files('avatars');
+        $randomAvatarPath = $this->faker->randomElement($avatarPaths);
+        $pictureData = base64_encode(file_get_contents(Storage::path($randomAvatarPath)));
 
         $addressValue = DB::raw("ROW('$street', '$number', '$postalCode', '$city', '$country')");
-        $pictureValue = DB::raw("lo_import('$fullPath')");
 
         return [
             'first_name' => $this->faker->firstName(),
@@ -42,7 +43,7 @@ class EmployeeFactory extends Factory
             'password' => Hash::make(env('TEST_PASSWORD')),
             'role' => Role::USER,
             'address' => $addressValue,
-            'picture' => $pictureValue,
+            'picture' => $pictureData,
         ];
     }
 

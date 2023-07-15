@@ -13,6 +13,12 @@
             </x-nav-link>
             {{--}}
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                @if ($e->picture)
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <img src="data:image;base64,{{ $e->picture }}" alt="employee picture"
+                             class="w-16 h-16 rounded-full">
+                    </div>
+                @endif
                 <div class="p-6 bg-white border-b border-gray-200">
                     Id: {{ $e->id }}
                 </div>
@@ -40,7 +46,8 @@
 
             </div>
             @if($e->role == \App\Models\Role::USER)
-                <x-nav-link :href="route('admin.employees.edit', ['employee' => $e->id])" :active="request()->routeIs('admin.employees.edit')">
+                <x-nav-link :href="route('admin.employees.edit', ['employee' => $e->id])"
+                            :active="request()->routeIs('admin.employees.edit')">
                     {{ __('Edit employee') }}
                 </x-nav-link>
                 <x-nav-link>

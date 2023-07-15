@@ -25,6 +25,9 @@
                                     Id
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Name
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -55,6 +58,11 @@
                                         class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         {{ $e->id }}
                                     </th>
+                                    <td class="px-6 py-4">
+                                        @if ($e->picture)
+                                            <img src="data:image;base64,{{ $e->picture }}" alt="employee picture" class="w-16 h-16 rounded-full">
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4">
                                         {{ $e->first_name }} {{ $e->last_name }}
                                     </td>

@@ -13,7 +13,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     public function getEmployees(): array
     {
         $employees = DB::select("
-            SELECT e.id, first_name, last_name, role, email, address, vacation_days, team_id, t.name as team_name
+            SELECT e.id, first_name, last_name, role, email, address, vacation_days, picture, team_id, t.name as team_name
             FROM employees e
             LEFT JOIN teams t
             ON team_id = t.id
@@ -26,7 +26,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     public function getEmployee($id)
     {
         $employee = DB::select("
-            SELECT e.id, first_name, last_name, role, email, address, vacation_days, team_id, t.name as team_name
+            SELECT e.id, first_name, last_name, role, email, address, vacation_days, picture, team_id, t.name as team_name
             FROM employees e
             LEFT JOIN teams t
             ON team_id = t.id
@@ -51,6 +51,10 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     private function formatRawEmployee($employee)
     {
         $employee->address = Helper::formatAddressToArray($employee->address);
+
+        if (!empty($employee->picture)) {
+            $employee->picture = stream_get_contents($employee->picture);
+        }
 
         return $employee;
     }
