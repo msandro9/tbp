@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\EmployeeRepositoryInterface;
+use App\Models\Role;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EmployeeController extends Controller
 {
@@ -43,7 +46,23 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $employee = $this->employeeRepository->getEmployee($id);
+        $current = $this->employeeRepository->getEmployee(auth()->id());
+
+        if (empty($employee)) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($employee->id != $current->id) {
+
+            if ($current->team_id == $employee->team_id) {
+                if (!in_array($current->role, [Role::PROJECT_LEADER, Role::TEAM_LEADER])) {
+                    throw new AuthorizationException();
+                }
+            }
+        }
+
+        return view('employees.show', ['e' => $employee]);
     }
 
     /**

@@ -45,19 +45,6 @@
                 </div>
 
             </div>
-            @if($e->role == \App\Models\Role::USER)
-                <x-nav-link :href="route('admin.employees.edit', ['employee' => $e->id])"
-                            :active="request()->routeIs('admin.employees.edit')">
-                    {{ __('Edit employee') }}
-                </x-nav-link>
-                <x-nav-link>
-                    <form method="POST" action={{ route('admin.employees.destroy', ['employee' => $e->id]) }}>
-                        @csrf
-                        @method('DELETE')
-                        <button>Delete employee</button>
-                    </form>
-                </x-nav-link>
-            @endif
         </div>
     </div>
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Contracts\EmployeeRepositoryInterface;
+use App\Contracts\RequestRepositoryInterface;
 use App\Contracts\TeamRepositoryInterface;
 use App\Helper\Helper;
 use App\Http\Controllers\Controller;
@@ -17,9 +18,12 @@ class TeamController extends Controller
 
     private TeamRepositoryInterface $teamRepository;
 
-    public function __construct(EmployeeRepositoryInterface $employeeRepository, TeamRepositoryInterface $teamRepository)
+    private RequestRepositoryInterface $requestRepository;
+
+    public function __construct(EmployeeRepositoryInterface $employeeRepository, TeamRepositoryInterface $teamRepository, RequestRepositoryInterface $requestRepository)
     {
         $this->employeeRepository = $employeeRepository;
+        $this->requestRepository = $requestRepository;
         $this->teamRepository = $teamRepository;
 
     }
@@ -67,7 +71,14 @@ class TeamController extends Controller
             throw new NotFoundHttpException();
         }
 
-        return view('admin.teams.show', ['t' => $team, 'employees' => $employees]);
+        $upcomingVacations = $this->requestRepository->getUpcomingVacationsForTeam($id);
+        $inProgressVacations = $this->requestRepository->getInProgressVacationsForTeam($id);
+
+        return view('admin.teams.show', ['t' => $team,
+            'employees' => $employees,
+            'inprogress' => $inProgressVacations,
+            'upcoming' => $upcomingVacations
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\EmployeeRepositoryInterface;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,13 +12,29 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    private EmployeeRepositoryInterface $employeeRepository;
+
+    public function __construct(EmployeeRepositoryInterface $employeeRepository)
+    {
+        $this->employeeRepository = $employeeRepository;
+    }
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        $employee = $this->employeeRepository->getEmployee(\auth()->id());
+        $data = explode(',', $employee->address);
+
+        $employee->street = trim($data[0]);
+        $employee->number = trim($data[1]);
+        $employee->postal_code = trim($data[2]);
+        $employee->city = trim($data[3]);
+        $employee->country = trim($data[4]);
+
+        return view('profile-edit', [
+            'user' => $employee,
         ]);
     }
 
@@ -26,15 +43,12 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validated = $request->validated();
+        $validated['id'] = \auth()->id();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $this->employeeRepository->updateProfile($validated);
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('employee.profile.edit')->with('status', 'profile-updated');
     }
 
     /**

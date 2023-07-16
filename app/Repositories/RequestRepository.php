@@ -138,7 +138,8 @@ class RequestRepository implements RequestRepositoryInterface
             UPDATE permissions SET
             accepted = :accepted,
             employee_id = :employee_id,
-            note = :note
+            note = :note,
+            updated_at = CURRENT_TIMESTAMP
             WHERE id = :id
         ", $values);
     }

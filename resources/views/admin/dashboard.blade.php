@@ -9,7 +9,30 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in as") }} #{{ auth()->id() }} {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}.
+                    {{ __("You're logged in as") }}
+                    #{{ auth()->id() }} {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    Total employees: {{$total_employees}}
+                </div>
+                <div class="p-6 text-gray-900">
+                    Total teams: {{$total_teams}}
+                </div>
+                <div class="p-6 text-gray-900">
+                    Total pending requests: {{$total_pending_requests}}
+                </div>
+                <div class="p-6 text-gray-900">
+                    Total accepted requests: {{$total_accepted_requests}}
+                </div>
+                <div class="p-6 text-gray-900">
+                    Total declined requests: {{$total_declined_requests}}
                 </div>
             </div>
         </div>

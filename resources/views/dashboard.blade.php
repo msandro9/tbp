@@ -32,7 +32,7 @@
 
         </x-request-table>
 
-        <x-request-table title="Approved" :requests="$approvedRequests">
+        <x-request-table title="Accepted" :requests="$approvedRequests">
 
         </x-request-table>
 

@@ -93,7 +93,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     public function getEmployeesByTeam($teamId)
     {
         $employees = DB::select("
-            SELECT e.id, first_name, last_name, role, email, address, vacation_days, team_id, t.name as team_name
+            SELECT e.id, first_name, last_name, role, picture, email, address, vacation_days, team_id, t.name as team_name
             FROM employees e
             INNER JOIN teams t
             ON team_id = t.id
@@ -138,5 +138,36 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         }
 
         return $employee[0];
+    }
+
+    public function updateProfile($values)
+    {
+        $picture = $values['picture'] ?? null;
+
+        if (!empty($picture)) {
+            $picture = base64_encode(file_get_contents($picture));
+            $values['picture'] = $picture;
+
+            DB::statement("
+            UPDATE employees SET
+            first_name = :first_name,
+            last_name = :last_name,
+            email = :email,
+            address = ROW(:street, :number, :postal_code, :city, :country),
+            picture = :picture
+            WHERE id = :id
+        ", $values);
+
+            return;
+        }
+
+        DB::statement("
+            UPDATE employees SET
+            first_name = :first_name,
+            last_name = :last_name,
+            email = :email,
+            address = ROW(:street, :number, :postal_code, :city, :country)
+            WHERE id = :id
+        ", $values);
     }
 }

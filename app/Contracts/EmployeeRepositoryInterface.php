@@ -22,4 +22,6 @@ interface EmployeeRepositoryInterface
     public function getTeamLeader($id);
 
     public function getProjectLeader($id);
+
+    public function updateProfile($values);
 }

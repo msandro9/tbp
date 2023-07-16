@@ -1,64 +1,103 @@
 <section>
     <header>
+        @if ($user->picture)
+            <div class="p-6 bg-white border-b border-gray-200">
+                <img src="data:image;base64,{{ $e->picture }}" alt="employee picture"
+                     class="w-16 h-16 rounded-full">
+            </div>
+        @endif
+            @if (session('status') === 'profile-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    class="text-sm text-green-600"
+                >{{ __('Successfully saved.') }}</p>
+            @endif
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's profile information.") }}
         </p>
     </header>
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+    <form method="post" action="{{ route('employee.profile.store') }}" class="mt-6 space-y-6">
         @csrf
-    </form>
-
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
-        @csrf
-        @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-label for="picture" :value="__('Picture')"/>
+
+            <input id="picture" class="block mt-1 w-full" type="file" name="picture" accept="image/*" />
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        <!-- First Name -->
+        <div class="mt-4">
+            <x-label for="first_name" :value="__('First Name')"/>
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+            <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name"
+                     :value="old('first_name') ?? $user->first_name" required autofocus/>
+        </div>
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+        <!-- Last Name -->
+        <div class="mt-4">
+            <x-label for="last_name" :value="__('Last Name')"/>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
-                </div>
-            @endif
+            <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name"
+                     :value="old('last_name')  ?? $user->last_name" required autofocus/>
+        </div>
+
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-label for="email" :value="__('Email')"/>
+
+            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email') ?? $user->email"
+                     required/>
+        </div>
+
+        <!-- Street -->
+        <div class="mt-4">
+            <x-label for="street" :value="__('Street')"/>
+
+            <x-input id="street" class="block mt-1 w-full" type="text" name="street" :value="old('street') ?? $user->street"
+                     required/>
+        </div>
+
+        <!-- Number -->
+        <div class="mt-4">
+            <x-label for="number" :value="__('Number')"/>
+
+            <x-input id="number" class="block mt-1 w-full" type="text" name="number" :value="old('number') ?? $user->number"
+                     required/>
+        </div>
+
+        <!-- Postal Code -->
+        <div class="mt-4">
+            <x-label for="postal_code" :value="__('Postal code')"/>
+
+            <x-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code"
+                     :value="old('postal_code') ?? $user->postal_code"
+                     required/>
+        </div>
+
+        <!-- City -->
+        <div class="mt-4">
+            <x-label for="city" :value="__('City')"/>
+
+            <x-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city') ?? $user->city"
+                     required/>
+        </div>
+
+        <!-- Country -->
+        <div class="mt-4">
+            <x-label for="country" :value="__('Country')"/>
+
+            <x-input id="country" class="block mt-1 w-full" type="text" name="country" :value="old('country')  ?? $user->country"
+                     required/>
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
+            <x-button>{{ __('Save') }}</x-button>
         </div>
     </form>
 </section>

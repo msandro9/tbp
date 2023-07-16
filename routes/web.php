@@ -23,11 +23,11 @@ use Illuminate\Support\Facades\Route;
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
 //
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+//Route::middleware('auth')->group(function () {
+//    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');*/
+//    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+//});
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -36,9 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => 'is_admin',
         'as' => 'admin.'
     ], function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('employees', \App\Http\Controllers\Admin\EmployeeController::class);
         Route::resource('teams', \App\Http\Controllers\Admin\TeamController::class);
@@ -56,6 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/requests/{request}/permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
         Route::put('/requests/{request}/permissions/{permission}/update', [PermissionController::class, 'update'])->name('permissions.update');
 
+        Route::get('/employees/{employee}', [\App\Http\Controllers\EmployeeController::class, 'show'])->name('employees.show');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 });
 require __DIR__ . '/auth.php';

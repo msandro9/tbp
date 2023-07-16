@@ -39,10 +39,10 @@ class DashboardController extends Controller
                 if ($request->status === 'Pending') {
                     $pendingRequests[] = $request;
                 }
-                if ($request->status === 'Approved') {
+                if ($request->status === 'Declined') {
                     $declinedRequests[] = $request;
                 }
-                if ($request->status === 'Declined') {
+                if ($request->status === 'Accepted') {
                     $approvedRequests[] = $request;
                 }
             }

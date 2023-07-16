@@ -50,10 +50,10 @@
                                         {{ $t->name }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        #{{ $t->tl_id }} {{ $t->tl_fn }} {{ $t->tl_fn }}
+                                        #{{ $t->tl_id }} {{ $t->tl_fn }} {{ $t->tl_ln }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        #{{ $t->pl_id }} {{ $t->pl_fn }} {{ $t->pl_fn }}
+                                        #{{ $t->pl_id }} {{ $t->pl_fn }} {{ $t->pl_ln }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <x-nav-link :href="route('admin.teams.show', ['team' => $t->id])" :active="request()->routeIs('admin.teams.show')">
